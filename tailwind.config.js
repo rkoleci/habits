@@ -20,6 +20,9 @@ module.exports = {
       // fontFamily: {
       //   sans: ['var(--font-sans)', ...fontFamily.sans]
       // },
+      gridTemplateColumns: {
+        '52': 'repeat(52, minmax(0, 1fr))',
+      },
       keyframes: {
         'accordion-down': {
           from: { height: 0 },

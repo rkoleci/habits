@@ -211,7 +211,6 @@ const copyBillingDetailsToCustomer = async (
 };
 
 const managePaymentCompleted = async (lineItems: Array<Stripe.LineItem>, customerId: string) => {
-  console.log(111, { customerId, lineItems: lineItems[0]?.price })
 
   const lineItem = lineItems[0]?.price 
 
@@ -230,8 +229,6 @@ const managePaymentCompleted = async (lineItems: Array<Stripe.LineItem>, custome
     throw new Error(`Customer lookup failed: ${noCustomerError.message}`);
 
   const { id: uuid } = customerData!;
-
-  console.log(111, { customerData})
 
   const subscriptionData: TablesInsert<'subscriptions'> = {
     id: uuidv4(),

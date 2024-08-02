@@ -1,6 +1,6 @@
-export const appName = 'ShipFastCheap'
+export const appName = 'Habits'
 
-export const domain = 'https://shipfast.cheap'
+export const domain = 'https://habits.com'
 
 export const adminEmail = 'rkoleci14@gmail.com'
 

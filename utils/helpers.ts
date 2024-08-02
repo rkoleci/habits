@@ -23,7 +23,6 @@ export const getURL = (path: string = '') => {
   // Ensure path starts without a slash to avoid double slashes in the final URL.
   path = path.replace(/^\/+/, '');
   // Concatenate the URL and the path.
-  console.log(111, 'url', url)
   return path ? `${url}/${path}` : url;
 };
 

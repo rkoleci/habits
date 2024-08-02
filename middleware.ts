@@ -3,7 +3,7 @@ import { updateSession } from '@/utils/supabase/middleware';
 import { createClient } from '@/utils/supabase/server';
 
 export const PROTECTED_ADMIN_ROUTES = ['/dashboard', `/api/protected/my-account`]
-export const PROTECTED_USER_ROUTES = ['/account', '/saas', `/api/protected/my-account`]
+export const PROTECTED_USER_ROUTES = ['/account',  `/api/protected/my-account`] // add '/saas',
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
