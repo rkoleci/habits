@@ -59,3 +59,64 @@ export async function POST(req: any) {
         NextResponse.json({ error: "Not signed in" }, { status: 401 });
     }
 }
+
+export async function DELETE(req: any, res: any) {
+    const supabase = createClient();
+    const { data: { user } } = await supabase.auth.getUser();
+    const id = req.nextUrl.searchParams.get("id")
+
+    if (!id) {
+        return NextResponse.json({ error: "ID is required" }, { status: 400 });
+    }
+
+    if (user) {
+
+        try {
+            const { error } = await supabase
+                .from('habits')
+                .delete()
+                .eq('id', id);
+
+            if (error) {
+                return NextResponse.json({ error }, { status: 405 });
+            }
+
+            return NextResponse.json({}, { status: 200 });
+        } catch (e) {
+            console.log(111, e)
+            return NextResponse.json({ error: e }, { status: 401 });
+        }
+    } else {
+        // Not Signed in
+        NextResponse.json({ error: "Not signed in" }, { status: 401 });
+    }
+}
+
+export async function PUT(req: any) {
+    const supabase = createClient();
+    const { data: { user } } = await supabase.auth.getUser();
+    const id = req.nextUrl.searchParams.get("id")
+
+    if (user) {
+
+        try {
+            const { data, error } = await supabase
+                .from('habits')
+                .update({ start_date: getSqlTimestampWithTimezone() })
+                .eq('id', id);
+            console.log(111,{error})
+                if (error) {
+                return NextResponse.json({ error }, { status: 405 });
+            }
+
+
+            return NextResponse.json({ data }, { status: 200 });
+        } catch (e) {
+            console.log(111, e)
+            return NextResponse.json({ error: e }, { status: 401 });
+        }
+    } else {
+        // Not Signed in
+        NextResponse.json({ error: "Not signed in" }, { status: 401 });
+    }
+}

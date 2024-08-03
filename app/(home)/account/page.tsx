@@ -13,7 +13,7 @@ export default async function Account() {
   } = await supabase.auth.getUser();
 
   const { data: subscription, error } = await supabase
-    .from('subscriptions')
+    .from('subscriptions') 
     .select('*, prices(*, products(*))')
     .eq('user_id', user?.id as string)
     .in('status', ['trialing', 'active'])
@@ -60,7 +60,7 @@ export default async function Account() {
       )}
 
       <div className="p-4">
-        {subscription[0] && <CustomerPortalForm subscription={subscription[0]} />}
+        {subscription[0] && <CustomerPortalForm subscription={subscription[0] as any} />}
       </div>
     </section>
   );

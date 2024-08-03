@@ -19,7 +19,7 @@ const supabaseAdmin = createClient<Database>(
 );
 
 const upsertProductRecord = async (product: Stripe.Product) => {
-  const productData: Product = {
+  const productData: any = {
     id: product.id,
     active: product.active,
     name: product.name,
@@ -94,7 +94,7 @@ const deletePriceRecord = async (price: Stripe.Price) => {
   console.log(`Price deleted: ${price.id}`);
 };
 
-const upsertCustomerToSupabase = async (uuid: string, customerId: string) => {
+const upsertCustomerToSupabase = async (uuid: any, customerId: string) => {
   const { error: upsertError } = await supabaseAdmin
     .from('customers')
     .upsert([{ id: uuid, stripe_customer_id: customerId }]);
@@ -191,7 +191,7 @@ const createOrRetrieveCustomer = async ({
  * Copies the billing details from the payment method to the customer object.
  */
 const copyBillingDetailsToCustomer = async (
-  uuid: string,
+  uuid: any,
   payment_method: Stripe.PaymentMethod
 ) => {
   //Todo: check this assertion
@@ -230,7 +230,7 @@ const managePaymentCompleted = async (lineItems: Array<Stripe.LineItem>, custome
 
   const { id: uuid } = customerData!;
 
-  const subscriptionData: TablesInsert<'subscriptions'> = {
+  const subscriptionData: any = {
     id: uuidv4(),
     user_id: uuid,
      status: 'active',
@@ -280,7 +280,7 @@ const manageSubscriptionStatusChange = async (
     expand: ['default_payment_method']
   });
   // Upsert the latest status of the subscription object.
-  const subscriptionData: TablesInsert<'subscriptions'> = {
+  const subscriptionData: any = {
     id: subscription.id,
     user_id: uuid,
     metadata: subscription.metadata,

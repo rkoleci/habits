@@ -12,6 +12,6 @@ export default async function Customers() {
     }
 
     return (
-        <CustomersTable data={data as Array<CustomerRow>} />
+        <CustomersTable data={data as any} />
     )
 }

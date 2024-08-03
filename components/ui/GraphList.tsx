@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation';
 import { HabitRow } from '@/types_db';
 import { User } from '@supabase/supabase-js';
 import { createClient } from '@/utils/supabase/client';
+import { getRandomMotivationalQuote } from '@/utils/constants';
 
 interface GraphListProps {
   user: User;
@@ -43,7 +44,6 @@ export default function GraphList({ user }: GraphListProps) {
     const reward = formData.get('reward') as string;
     const days = formData.get('days') as string;
 
-
     try {
       const response = await fetch('/api/habits', {
         method: 'post',
@@ -58,9 +58,37 @@ export default function GraphList({ user }: GraphListProps) {
         setFormData({ name: '', days: '', reward: '', startDate: new Date() })
       }
     } catch (e) {
-      console.log(111, {e})
+      console.log(111, { e })
     }
   };
+
+  const handleReset = async (id: string) => {
+    try {
+      const response = await fetch(`/api/habits?id=${id}`, {
+        method: 'PUT',
+      })
+      console.log(111, {response})
+      if (response.status === 200) {
+        fetchHabits(user?.id)
+        
+      }
+    } catch (e) {
+      console.log(111, { e })
+    }
+  }
+
+  const handleDelete = async (id: string) => {
+    try {
+      const response = await fetch(`/api/habits?id=${id}`, {
+        method: 'DELETE',
+      })
+      if (response.status === 200) {
+        fetchHabits(user?.id)
+      }
+    } catch (e) {
+      console.log(111, { e })
+    }
+  }
 
   return (
     <div className="bg-base-200 flex flex-col items-center min-h-screen gap-8 w-full ">
@@ -74,9 +102,14 @@ export default function GraphList({ user }: GraphListProps) {
         </svg>
         Create New Graph
       </button>
+      {!habitsList.length && (
+        <div>
+          {getRandomMotivationalQuote()}
+        </div>
+      )}
       <div className="max-w-5xl flex flex-wrap items-stretch gap-8 w-full">
         {habitsList.map(habit => (
-          <ContributionGraph key={habit.id} habit={habit} />
+          <ContributionGraph key={habit.id} habit={habit} handleDelete={handleDelete} handleReset={handleReset} />
         ))}
       </div>
 

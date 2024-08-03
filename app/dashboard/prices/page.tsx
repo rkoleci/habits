@@ -1,5 +1,5 @@
 import PricesTable from "@/components/ui/dashboard/PricesTable";
-import { PriceRow } from "@/types_db";
+import { Price, PriceRow } from "@/types_db";
 import { createClient } from "@/utils/supabase/server";
 
 
@@ -13,6 +13,6 @@ export default async function Prices() {
     }
 
     return (
-        <PricesTable data={data as Array<PriceRow>} />
+        <PricesTable data={data as any} />
     )
 }
