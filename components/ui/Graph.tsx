@@ -1,50 +1,24 @@
 'use client'
-import { fail } from 'assert';
+import { HabitRow } from '@/types_db';
 import React, { useState, useEffect } from 'react';
 
 interface ContributionGraphProps {
-  numDays: number;
-  startDate: Date;
-  name: string;
-  reward: string;
+  habit: HabitRow
 }
 
-interface ResponsiveGridProps {
-  numBoxes: number;
-}
-
-const ResponsiveGrid: React.FC<ResponsiveGridProps> = ({ numBoxes }) => {
-  const boxes = Array.from({ length: numBoxes }, (_, i) => i + 1);
-
-  return (
-    <div className="container mx-auto p-0 w-full">
-      <div className="grid gap-2"
-           style={{
-             gridTemplateColumns: `repeat(auto-fit, minmax(${Math.floor(100 / numBoxes)}%, 1fr))`,
-           }}>
-        {boxes.map((box, index) => (
-          <div
-            key={index}
-            className="bg-blue-500 aspect-square min-w-[6px] min-h-[6px] rounded-xs"
-          />
-        ))}
-      </div>
-    </div>
-  );
-};
-
-
-const ContributionGraph: React.FC<ContributionGraphProps> = ({ numDays, startDate, name, reward }) => {
-  const totalDays = 60
+const ContributionGraph = ({ habit: { days, start_date, id, name, reward }}: ContributionGraphProps) => {
+  const totalDays = 130
   const [contributions, setContributions] = useState<boolean[]>(Array(totalDays).fill(false));
   const [dates, setDates] = useState<string[]>([]);
   const [progress, setProgress] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [daysLeft, setDaysLeft] = useState(-1)
 
+  if (!days || !start_date) return null
+
   useEffect(() => {
     const today = new Date();
-    const startDateObj = new Date(startDate);
+    const startDateObj = new Date(start_date);
 
     // Generate the dates for the boxes
     const dateArray = Array.from({ length: totalDays }, (_, i) => {
@@ -56,7 +30,7 @@ const ContributionGraph: React.FC<ContributionGraphProps> = ({ numDays, startDat
 
     // Calculate the number of days passed since startDate
     const daysPassed = Math.abs(Math.floor((today.getTime() - startDateObj.getTime()) / (1000 * 60 * 60 * 24)));
-    setDaysLeft(numDays - daysPassed)
+    setDaysLeft(days - daysPassed)
     // Automatically tick boxes from startDate to the end of the previous day
     setContributions(prev => {
       const newContributions = [...prev];
@@ -73,15 +47,15 @@ const ContributionGraph: React.FC<ContributionGraphProps> = ({ numDays, startDat
     });
 
 
-  }, [numDays, startDate]);
+  }, [days, start_date]);
 
   useEffect(() => {
     // Calculate progress
     const filledBoxes = contributions.filter(Boolean).length;
-    if (filledBoxes >= numDays) {
+    if (filledBoxes >= days) {
       setProgress(100)
     } else {
-      setProgress((filledBoxes / numDays) * 100);
+      setProgress((filledBoxes / days) * 100);
     }
   }, [contributions])
 
@@ -98,35 +72,49 @@ const ContributionGraph: React.FC<ContributionGraphProps> = ({ numDays, startDat
   };
 
   return (
-    <div className="card bg-base-100 shadow-xl p-4 w-full min-w-full ">
+    <div className="card bg-base-100 shadow-xl p-4 w-full">
 
-      <div className='flex w-full '>
+      <div className='flex'>
 
-        <div className='w-full pr-4'>
-          <div className='flex justify-between items-center w-full'>
-            <div className="flex flex-start gap-4 items-center mb-6">
-              <div className='bg-accent p-2 rounded-lg'>
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="lucide lucide-dumbbell"><path d="M14.4 14.4 9.6 9.6" /><path d="M18.657 21.485a2 2 0 1 1-2.829-2.828l-1.767 1.768a2 2 0 1 1-2.829-2.829l6.364-6.364a2 2 0 1 1 2.829 2.829l-1.768 1.767a2 2 0 1 1 2.828 2.829z" /><path d="m21.5 21.5-1.4-1.4" /><path d="M3.9 3.9 2.5 2.5" /><path d="M6.404 12.768a2 2 0 1 1-2.829-2.829l1.768-1.767a2 2 0 1 1-2.828-2.829l2.828-2.828a2 2 0 1 1 2.829 2.828l1.767-1.768a2 2 0 1 1 2.829 2.829z" /></svg>
-              </div>
-              <p className="text-lg">{name}</p> {/* Label below the graph */}
-            </div>
+        <div>
 
+        <div className='flex justify-between items-center w-full'>
+        <div className="flex flex-start gap-4 items-center mb-6">
+          <div className='bg-accent p-2 rounded-lg'>
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="lucide lucide-dumbbell"><path d="M14.4 14.4 9.6 9.6" /><path d="M18.657 21.485a2 2 0 1 1-2.829-2.828l-1.767 1.768a2 2 0 1 1-2.829-2.829l6.364-6.364a2 2 0 1 1 2.829 2.829l-1.768 1.767a2 2 0 1 1 2.828 2.829z" /><path d="m21.5 21.5-1.4-1.4" /><path d="M3.9 3.9 2.5 2.5" /><path d="M6.404 12.768a2 2 0 1 1-2.829-2.829l1.768-1.767a2 2 0 1 1-2.828-2.829l2.828-2.828a2 2 0 1 1 2.829 2.828l1.767-1.768a2 2 0 1 1 2.829 2.829z" /></svg>
           </div>
-
-          <ResponsiveGrid numBoxes={totalDays} />
-
-          <div className='flex justify-start md:justify-center items-center gap-4 mt-6  '>
-            <p className='text-sm md:text-md lg:text-lg'> <span className='text-primary'>{daysLeft}</span> days left until you can <span className='text-primary'> {reward}</span></p>
-            <button
-              className="btn btn-accent  w-fit"
-              onClick={() => setIsModalOpen(true)}
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="lucide lucide-rotate-ccw"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" /><path d="M3 3v5h5" /></svg>
-            </button>
-          </div>
+          <p className="text-lg">{name}</p> {/* Label below the graph */}
         </div>
 
-        <div className="relative" style={{ width: '5%', minWidth: '25px' }}>
+      </div>
+
+      <div className="flex mb-6">
+        <div className="flex-grow mr-4">
+          <div className="flex flex-wrap gap-1">
+            {Array.from({ length: totalDays }).map((_, index) => (
+              <div
+                key={index}
+                className={`h-[9px] w-[9px] rounded-sm ${contributions[index] ? 'bg-yellow-500' : 'bg-base-300'
+                  } sm:h-[15px] sm:w-[15px]`} // Adjust size for larger screens
+                title={`Date: ${dates[index]}`}
+              />
+            ))}
+          </div>
+        </div> 
+      </div>
+
+      <div className='flex justify-start md:justify-center items-center gap-4'>
+       <p className='text-sm md:text-md lg:text-lg'> <span className='text-primary'>{daysLeft}</span> days left until you can <span className='text-primary'> {reward}</span></p>
+        <button
+          className="btn btn-accent  w-fit"
+          onClick={() => setIsModalOpen(true)}
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="lucide lucide-rotate-ccw"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" /><path d="M3 3v5h5" /></svg>
+        </button>
+      </div>
+        </div>
+
+      <div className="relative" style={{ width: '15%', minWidth: '25px' }}>
           <div className="absolute inset-x-0 bottom-0 w-full h-full bg-base-300 rounded-full overflow-hidden">
             <div
               className="absolute bottom-0 w-full bg-gradient-to-b from-primary to-accent transition-all duration-500 ease-out rounded-full"
