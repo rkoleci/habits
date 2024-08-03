@@ -4,7 +4,12 @@ import ContributionGraph from "@/components/ui/Graph";
 
 export default function GraphList() {
   const [graphs, setGraphs] = useState([
-    { id: 1, numDays: 10, startDate: new Date('2024-08-01'), name: 'Gym', reward: 'buy protein' },
+    { id: 1, numDays:  10, startDate: new Date('2024-08-01'), name: 'Gym', reward: 'buy protein' },
+    { id: 1, numDays:  40, startDate: new Date('2024-08-01'), name: 'Gym', reward: 'buy protein' },
+    { id: 1, numDays:  90, startDate: new Date('2024-08-01'), name: 'Gym', reward: 'buy protein' },
+    { id: 1, numDays:  150, startDate: new Date('2024-08-01'), name: 'Gym', reward: 'buy protein' },
+    { id: 1, numDays:  200, startDate: new Date('2024-08-01'), name: 'Gym', reward: 'buy protein' },
+    { id: 1, numDays:  300, startDate: new Date('2024-08-01'), name: 'Gym', reward: 'buy protein' },
   ]);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -17,7 +22,7 @@ export default function GraphList() {
       name: formData.name,
       reward: formData.reward,
       numDays: parseInt(formData.days, 10),
-      startDate: new Date(formData.startDate),
+      startDate: formData.startDate,
     };
     setGraphs([...graphs, newGraph]);
     setIsModalOpen(false);
@@ -32,7 +37,7 @@ export default function GraphList() {
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="lucide lucide-plus"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
           Create New Graph
         </button>
-      <div className="max-w-5xl flex flex-col gap-8">
+      <div className="max-w-5xl flex flex-wrap items-stretch gap-8 w-full">
         {graphs.map(graph => (
           <ContributionGraph 
             key={graph.id} 
