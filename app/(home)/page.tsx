@@ -16,7 +16,6 @@ export default async function Landing() {
     return (
         <main>
             <Hero />
-            <FeaturedOn />
             {/* <FeaturesListicle /> */}
             <Pricing />
             <Suspense>

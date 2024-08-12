@@ -15,7 +15,7 @@ export default function Navbar() {
                     <a href="/leaderboard" className="link leading-7 text-base font-normal link-accent-main  no-underline">Leaderboard</a>
                 </ul>
                 <ul className="menu menu-horizontal  gap-4 md:gap-12 text-accent-main">
-                    <a href="/#pricing" className="link leading-7 text-base font-normal link-accent-main  no-underline">Pricing</a>
+                    <a href="/saas" className="link leading-7 text-base font-normal link-accent-main  no-underline">Tracker</a>
                 </ul>
             </div>
             <div className="flex-none">
