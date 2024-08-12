@@ -17,8 +17,7 @@ export default async function Landing() {
         <main>
             <Hero />
             <FeaturedOn />
-            <FeaturesListicle />
-            <Intro />
+            {/* <FeaturesListicle /> */}
             <Pricing />
             <Suspense>
             <Freemium>
@@ -31,7 +30,7 @@ export default async function Landing() {
                 </section>
             </Freemium>
             </Suspense>
-            <FAQ />
+            {/* <FAQ /> */}
             <TestimonialTriple />
             <Boost />
             <Footer />

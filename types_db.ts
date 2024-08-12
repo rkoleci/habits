@@ -28,6 +28,7 @@ export type Database = {
         Row: {
           created_at: string
           days: number | null
+          icon: string | null
           id: string
           name: string | null
           reward: string | null
@@ -37,6 +38,7 @@ export type Database = {
         Insert: {
           created_at?: string
           days?: number | null
+          icon?: string | null
           id?: string
           name?: string | null
           reward?: string | null
@@ -46,6 +48,7 @@ export type Database = {
         Update: {
           created_at?: string
           days?: number | null
+          icon?: string | null
           id?: string
           name?: string | null
           reward?: string | null
@@ -214,6 +217,7 @@ export type Database = {
           id: string
           payment_method: Json | null
           role: string | null
+          streak: number | null
         }
         Insert: {
           avatar_url?: string | null
@@ -223,6 +227,7 @@ export type Database = {
           id: string
           payment_method?: Json | null
           role?: string | null
+          streak?: number | null
         }
         Update: {
           avatar_url?: string | null
@@ -232,6 +237,7 @@ export type Database = {
           id?: string
           payment_method?: Json | null
           role?: string | null
+          streak?: number | null
         }
         Relationships: []
       }
@@ -367,25 +373,5 @@ export type Enums<
     ? PublicSchema["Enums"][PublicEnumNameOrOptions]
     : never
 
-
-
-export type WaitlistRow = Tables<"waitlist">
-export type UsersRow = Tables<"users">
-type Customer = Tables<"customers">
-export type ProductRow = Tables<"products">
-export type Price = Tables<"prices">
-type Subscription = Tables<"subscriptions">
-
-export type PriceRow = Price & {
-  products: ProductRow
-}
-
-export type CustomerRow = Customer & {
-  users: UsersRow
-}
-export type SubscriptionRow = Subscription & {
-  users: UsersRow
-  prices: Price
-}
-
-export type HabitRow = Tables<"habits">
+    export type HabitRow = Tables<'habits'>
+    export type UserRow = Tables<'users'>

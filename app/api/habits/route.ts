@@ -24,10 +24,9 @@ function getSqlTimestampWithTimezone() {
 export async function POST(req: any) {
     const supabase = createClient();
     const { data: { user } } = await supabase.auth.getUser();
-    console.log(111, { user })
+    
     if (user) {
         const body = await req.json();
-        console.log(111, { body })
 
         if (!body.name) {
             return NextResponse.json({ error: "Name is required" }, { status: 400 });
@@ -41,8 +40,9 @@ export async function POST(req: any) {
                 days: body.days,
                 start_date: getSqlTimestampWithTimezone(),
                 user_id: user?.id,
+                icon: body.icon
             });
-            console.log(111, error)
+          
             if (error) {
                 return NextResponse.json({ error }, { status: 405 });
             }
@@ -97,20 +97,43 @@ export async function PUT(req: any) {
     const { data: { user } } = await supabase.auth.getUser();
     const id = req.nextUrl.searchParams.get("id")
 
+    const body = await req.json()
+
     if (user) {
 
         try {
-            const { data, error } = await supabase
-                .from('habits')
-                .update({ start_date: getSqlTimestampWithTimezone() })
-                .eq('id', id);
-            console.log(111,{error})
-                if (error) {
-                return NextResponse.json({ error }, { status: 405 });
+            if (body.deleted) {
+                const {   error } = await supabase
+                    .from('habits')
+                    .delete()
+                    .eq('id', id)
+
+                    if (error) {
+                        return NextResponse.json({ error }, { status: 405 });
+                    }
+            } else {
+                const { error } = await supabase
+                    .from('habits')
+                    .update({ start_date: getSqlTimestampWithTimezone() })
+                    .eq('id', id);
+
+                    if (error) {
+                        return NextResponse.json({ error }, { status: 405 });
+                    }
             }
 
+            const { data: userRecord } = await supabase
+                .from('users')
+                .select('*')
+                .eq('id', user.id)
+                .single()
 
-            return NextResponse.json({ data }, { status: 200 });
+            await supabase
+                .from('users')
+                .update({ streak: Number(userRecord?.streak) + Number(body.daysCompleted) })
+                .eq('id', user?.id)
+
+            return NextResponse.json({ data: "Success" }, { status: 200 });
         } catch (e) {
             console.log(111, e)
             return NextResponse.json({ error: e }, { status: 401 });

@@ -14,7 +14,6 @@ export async function GET(request: NextRequest) {
 
 
     const { error } = await supabase.auth.exchangeCodeForSession(code);
-    console.log(111, 'error', error)
     if (error) {
       return NextResponse.redirect(
         getErrorRedirect(
@@ -24,10 +23,11 @@ export async function GET(request: NextRequest) {
         )
       );
     }
+
+    
   }
 
   const { data: auth } = await supabase.auth.getUser()
-  console.log(111, 'auth', auth)
   if (!auth) {
     return NextResponse.redirect(
       getErrorRedirect(
@@ -55,27 +55,15 @@ export async function GET(request: NextRequest) {
     );
   }
 
-
-
-  if (user?.role === 'admin') {
-    return NextResponse.redirect(
-      getStatusRedirect(
-        `${requestUrl.origin}/dashboard`,
-        'Success!',
-        'You are now signed in.'
-      )
-    );
-  }
+ 
 
   // Check if user has subscription
   const { data: subscription, error } = await supabase
-  .from('subscriptions')
-  .select('*, prices(*, products(*))')
-  .eq('user_id', auth.user?.id as string)
-  .in('status', ['trialing', 'active'])
-  .select()
-
-  console.log(111, 'subscr', auth.user?.id,   subscription)
+    .from('subscriptions')
+    .select('*, prices(*, products(*))')
+    .eq('user_id', auth.user?.id as string)
+    .in('status', ['trialing', 'active'])
+    .select()
 
   if (!subscription?.length || (subscription && subscription[0] && subscription[0]?.status !== 'active')) {
     return NextResponse.redirect(
@@ -86,6 +74,8 @@ export async function GET(request: NextRequest) {
       )
     );
   }
+
+
 
   // URL to redirect to after sign in process completes
   return NextResponse.redirect(

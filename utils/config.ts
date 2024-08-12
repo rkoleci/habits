@@ -1,4 +1,4 @@
-export const appName = 'Habits'
+export const appName = 'HabitReward'
 
 export const domain = 'https://habits.com'
 
