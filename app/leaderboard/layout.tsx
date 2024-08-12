@@ -13,7 +13,8 @@ import { appName, domain } from '@/utils/config';
 import Script from 'next/script';
 
 const seoTags = getSeoTags({
-  title: `Launch Your Startup in Days, not Weeks (For $19.99) | ${appName}`
+  title: `Don't give up good
+  habits,reward yourself | ${appName}`
 })
 
 const meta = {
