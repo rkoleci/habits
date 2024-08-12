@@ -1,4 +1,6 @@
+import Image from "next/image";
 import PricingCTA from "../server/PricingCTA";
+import shipfastTechstack from '../../public/reward.webp'
 
 export default function Boost() {
 
@@ -13,8 +15,17 @@ export default function Boost() {
                         <p className="relative text-lg text-accent-main text-base-content/80">Don't rely on pure motivation.. It's over in three days</p>
                     </div>
                     <PricingCTA extraClasses=' items-center lg:items-center' />
+                    <div className="relative max-md:-m-4 lg:w-full flex justify-center ">
+                    <Image
+                        src={shipfastTechstack}
+                        alt="Reward"
+                        height={700}
+                    />
                 </div>
+                </div>
+              
             </div>
+            
         </section>
     )
 }

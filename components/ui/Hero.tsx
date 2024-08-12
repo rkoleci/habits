@@ -1,5 +1,5 @@
 import Image from "next/image";
-import shipfastTechstack from '../../public/hero.png'
+import shipfastTechstack from '../../public/hero.webp'
 import shipfastAvatar from '../../public/shipfast_avatar.webp'
 import shipfastAvatar2 from '../../public/shipfast_avatar_2.webp'
 import Rating from '@components/ui/Rating'
@@ -90,8 +90,6 @@ export default function Hero() {
                         alt="Hero"
                         height={400}
                         width={300}
-                        className="bg-red"
-
                     />
                 </div>
             </div>
