@@ -58,22 +58,22 @@ export async function GET(request: NextRequest) {
  
 
   // Check if user has subscription
-  const { data: subscription, error } = await supabase
-    .from('subscriptions')
-    .select('*, prices(*, products(*))')
-    .eq('user_id', auth.user?.id as string)
-    .in('status', ['trialing', 'active'])
-    .select()
+  // const { data: subscription, error } = await supabase
+  //   .from('subscriptions')
+  //   .select('*, prices(*, products(*))')
+  //   .eq('user_id', auth.user?.id as string)
+  //   .in('status', ['trialing', 'active'])
+  //   .select()
 
-  if (!subscription?.length || (subscription && subscription[0] && subscription[0]?.status !== 'active')) {
-    return NextResponse.redirect(
-      getStatusRedirect(
-        `${requestUrl.origin}/#pricing`,
-        'Success!',
-        'You are now signed in.'
-      )
-    );
-  }
+  // if (!subscription?.length || (subscription && subscription[0] && subscription[0]?.status !== 'active')) {
+  //   return NextResponse.redirect(
+  //     getStatusRedirect(
+  //       `${requestUrl.origin}/saas`,
+  //       'Success!',
+  //       'You are now signed in.'
+  //     )
+  //   );
+  // }
 
 
 
